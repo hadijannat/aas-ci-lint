@@ -2,9 +2,6 @@
 
 Bring Asset Administration Shell validation into CI with first-class GitHub reporting (SARIF + PR annotations).
 
-[![CI](https://github.com/hadijannat/aas-ci-lint/actions/workflows/ci.yml/badge.svg)](https://github.com/hadijannat/aas-ci-lint/actions/workflows/ci.yml)
-[![npm version](https://badge.fury.io/js/%40aas-ci-lint%2Fcli.svg)](https://www.npmjs.com/package/@aas-ci-lint/cli)
-
 ## Features
 
 **Validate Early, Validate Automatically**
