@@ -34,9 +34,7 @@ describe('CLI integration', () => {
                         },
                         modelType: 'AssetAdministrationShell',
                     },
-                ],
-                submodels: [],
-                conceptDescriptions: [],
+                ]
             })
         );
     });

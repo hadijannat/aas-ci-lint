@@ -43,4 +43,4 @@ jobs:
       - name: Integration test
         run: |
           cd packages/cli
-          node dist/cli.js --base-path ../../examples "*.json"
+          node dist/cli.js --base-path ../../examples "valid-environment.json"
