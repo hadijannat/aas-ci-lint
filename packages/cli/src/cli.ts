@@ -18,6 +18,7 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Orchestrator, type LintConfig, type LintResult, type Severity } from '@aas-ci-lint/core';
 import { AasTestEnginesEngine } from '@aas-ci-lint/engine-python';
+import { TemplateConformanceEngine } from '@aas-ci-lint/engine-template';
 import { generateSarif } from '@aas-ci-lint/sarif';
 
 // Read version from package.json
@@ -37,6 +38,9 @@ program
     .option('--fail-on <severities>', 'Fail on these severities (comma-separated)', 'error')
     .option('--exclude <patterns>', 'Exclude patterns (comma-separated)')
     .option('--base-path <dir>', 'Base directory for resolving paths', process.cwd())
+    .option('--template-version <version>', 'IDTA template version to validate against')
+    .option('--template-dir <dir>', 'Directory containing IDTA template JSON files')
+    .option('--no-template', 'Disable template conformance checks')
     .option('--no-color', 'Disable colored output')
     .action(async (paths: string[], options) => {
         try {
@@ -62,6 +66,9 @@ async function run(
         failOn: string;
         exclude?: string;
         basePath: string;
+        templateVersion?: string;
+        templateDir?: string;
+        template?: boolean;
         color?: boolean;
     }
 ): Promise<number> {
@@ -75,12 +82,16 @@ async function run(
         exclude,
         failOn,
         basePath: options.basePath,
+        templateVersion: options.templateVersion,
+        templateDir: options.templateDir,
     };
 
     // Create orchestrator and register engines
     const orchestrator = new Orchestrator();
     orchestrator.registerEngine(new AasTestEnginesEngine());
-    // Add template engine here when implemented
+    if (options.template !== false) {
+        orchestrator.registerEngine(new TemplateConformanceEngine({ templateDir: options.templateDir }));
+    }
 
     // Run validation
     console.error(chalk.blue('🔍 Discovering AAS files...'));

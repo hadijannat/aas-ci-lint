@@ -10,12 +10,13 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "tsc",
-        "test": "node --test dist/**/*.test.js",
+        "test": "node --test dist",
         "clean": "rm -rf dist"
     },
     "dependencies": {
         "@aas-ci-lint/core": "workspace:*",
         "@aas-ci-lint/engine-python": "workspace:*",
+        "@aas-ci-lint/engine-template": "workspace:*",
         "@aas-ci-lint/sarif": "workspace:*",
         "commander": "^12.0.0",
         "chalk": "^5.3.0"

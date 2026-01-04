@@ -75,8 +75,7 @@ export class AasTestEnginesEngine implements ValidationEngine {
 
     /**
      * Invoke the aas_test_engines CLI and capture its output.
-     * Note: The --output flag in aas_test_engines appears broken,
-     * so we parse the TEXT output instead.
+     * Attempts to parse JSON output if present, otherwise falls back to text parsing.
      */
     private async invokeTestEngines(filePath: string): Promise<TestEngineOutput> {
         return new Promise((resolve, reject) => {
@@ -103,11 +102,20 @@ export class AasTestEnginesEngine implements ValidationEngine {
             });
 
             proc.on('close', (code) => {
-                // Exit code 0 = valid, non-zero = violations found
-                const violations = this.parseTextOutput(stdout + stderr);
+                const combined = `${stdout}\n${stderr}`;
+                const jsonOutput = this.parseJsonOutput(combined)
+                    ?? this.parseJsonOutput(stdout)
+                    ?? this.parseJsonOutput(stderr);
 
+                if (jsonOutput) {
+                    resolve(jsonOutput);
+                    return;
+                }
+
+                // Exit code 0 = valid, non-zero = violations found
+                const violations = this.parseTextOutput(combined);
                 resolve({
-                    valid: code === 0,
+                    valid: code === 0 && violations.length === 0,
                     violations,
                 });
             });
@@ -119,6 +127,64 @@ export class AasTestEnginesEngine implements ValidationEngine {
                 ));
             });
         });
+    }
+
+    /**
+     * Attempt to parse JSON output from aas_test_engines.
+     * Returns null if no JSON payload is found.
+     */
+    private parseJsonOutput(output: string): TestEngineOutput | null {
+        const jsonStart = output.indexOf('{');
+        const jsonEnd = output.lastIndexOf('}');
+        if (jsonStart === -1 || jsonEnd === -1 || jsonEnd <= jsonStart) {
+            return null;
+        }
+
+        try {
+            const jsonStr = output.substring(jsonStart, jsonEnd + 1);
+            const parsed = JSON.parse(jsonStr);
+            const violations = this.normalizeViolations(parsed);
+            if (!violations) {
+                return null;
+            }
+            const valid = typeof parsed?.valid === 'boolean'
+                ? parsed.valid
+                : violations.length === 0;
+            return { valid, violations };
+        } catch {
+            return null;
+        }
+    }
+
+    private normalizeViolations(parsed: any): TestEngineViolation[] | null {
+        if (Array.isArray(parsed?.violations)) {
+            return parsed.violations.map((v: unknown) => this.normalizeViolation(v)).filter(Boolean) as TestEngineViolation[];
+        }
+        if (Array.isArray(parsed?.errors)) {
+            return parsed.errors.map((v: unknown) => this.normalizeViolation(v)).filter(Boolean) as TestEngineViolation[];
+        }
+        if (Array.isArray(parsed)) {
+            return parsed.map((v: unknown) => this.normalizeViolation(v)).filter(Boolean) as TestEngineViolation[];
+        }
+        return null;
+    }
+
+    private normalizeViolation(violation: any): TestEngineViolation | null {
+        if (typeof violation === 'string') {
+            return { message: violation, level: 'error' };
+        }
+        if (!violation || typeof violation !== 'object') {
+            return null;
+        }
+        const message = violation.message ?? violation.msg ?? violation.description;
+        if (typeof message !== 'string' || message.length === 0) {
+            return null;
+        }
+        return {
+            message,
+            level: violation.level ?? violation.severity ?? 'error',
+            path: violation.path ?? violation.pointer ?? violation.jsonPointer,
+        };
     }
 
     /**

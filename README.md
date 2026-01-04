@@ -10,7 +10,7 @@ Bring Asset Administration Shell validation into CI with first-class GitHub repo
 **Validate Early, Validate Automatically**
 - Validates AASX packages, AAS JSON, and AAS XML files
 - Built on the official [AAS Test Engines](https://github.com/admin-shell-io/aas-test-engines) for correctness
-- Extends with template-aware validation for IDTA submodel templates
+- Extends with template-aware validation for IDTA submodel templates (optional, requires templates on disk)
 
 **CI-First Developer Experience**
 - SARIF output for GitHub Code Scanning integration
@@ -68,6 +68,7 @@ aas-ci-lint --sarif results.sarif models/
 | `sarif` | `aas-lint.sarif` | SARIF output path |
 | `upload-sarif` | `true` | Upload SARIF to GitHub |
 | `template-version` | latest | IDTA template version |
+| `template-dir` | - | Directory containing IDTA template JSON files |
 
 ## How It Works
 
@@ -82,6 +83,8 @@ AAS CI Lint uses a layered validation approach:
    - Matches submodels to IDTA templates by semantic ID
    - Validates cardinality constraints
    - Checks required elements
+
+Template conformance runs when templates are available. Configure via `--template-dir` (CLI), `template-dir` (Action), or `AAS_CI_LINT_TEMPLATE_DIR`.
 
 Results are normalized and output as:
 - Human-readable terminal output

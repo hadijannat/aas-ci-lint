@@ -1,7 +1,7 @@
 {
-    "name": "@aas-ci-lint/engine-python",
+    "name": "@aas-ci-lint/engine-template",
     "version": "0.1.0",
-    "description": "AAS Test Engines wrapper for AAS CI Linter",
+    "description": "IDTA submodel template conformance engine for AAS CI Linter",
     "type": "module",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -17,7 +17,8 @@
         "clean": "rm -rf dist"
     },
     "dependencies": {
-        "@aas-ci-lint/core": "workspace:*"
+        "@aas-ci-lint/core": "workspace:*",
+        "fast-glob": "^3.3.2"
     },
     "devDependencies": {
         "@types/node": "^20.0.0",

@@ -14,6 +14,7 @@ import * as github from '@actions/github';
 import * as fs from 'node:fs/promises';
 import { Orchestrator, type LintConfig, type LintResult, type Severity, type Finding } from '@aas-ci-lint/core';
 import { AasTestEnginesEngine } from '@aas-ci-lint/engine-python';
+import { TemplateConformanceEngine } from '@aas-ci-lint/engine-template';
 import { generateSarif } from '@aas-ci-lint/sarif';
 
 async function run(): Promise<void> {
@@ -36,6 +37,7 @@ async function run(): Promise<void> {
         const sarifPath = core.getInput('sarif');
         const uploadSarif = core.getInput('upload-sarif') === 'true';
         const templateVersion = core.getInput('template-version') || undefined;
+        const templateDir = core.getInput('template-dir') || undefined;
 
         // Build configuration
         const config: LintConfig = {
@@ -43,6 +45,7 @@ async function run(): Promise<void> {
             exclude,
             failOn,
             templateVersion,
+            templateDir,
             basePath: process.env.GITHUB_WORKSPACE ?? process.cwd(),
         };
 
@@ -51,6 +54,7 @@ async function run(): Promise<void> {
         // Create orchestrator and register engines
         const orchestrator = new Orchestrator();
         orchestrator.registerEngine(new AasTestEnginesEngine());
+        orchestrator.registerEngine(new TemplateConformanceEngine({ templateDir }));
 
         // Run validation
         const result = await orchestrator.lint(config);

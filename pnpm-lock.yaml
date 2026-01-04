@@ -23,6 +23,9 @@ importers:
       '@aas-ci-lint/engine-python':
         specifier: workspace:*
         version: link:../engine-python
+      '@aas-ci-lint/engine-template':
+        specifier: workspace:*
+        version: link:../engine-template
       '@aas-ci-lint/sarif':
         specifier: workspace:*
         version: link:../sarif
@@ -51,6 +54,9 @@ importers:
       '@aas-ci-lint/engine-python':
         specifier: workspace:*
         version: link:../engine-python
+      '@aas-ci-lint/engine-template':
+        specifier: workspace:*
+        version: link:../engine-template
       '@aas-ci-lint/sarif':
         specifier: workspace:*
         version: link:../sarif
@@ -92,6 +98,22 @@ importers:
       '@aas-ci-lint/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.27
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  packages/engine-template:
+    dependencies:
+      '@aas-ci-lint/core':
+        specifier: workspace:*
+        version: link:../core
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.3
     devDependencies:
       '@types/node':
         specifier: ^20.0.0

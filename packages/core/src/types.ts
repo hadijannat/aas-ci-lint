@@ -120,6 +120,12 @@ export interface LintConfig {
     templateVersion?: string;
 
     /**
+     * Local directory containing IDTA template JSON files.
+     * Can point to a repo clone or a published templates folder.
+     */
+    templateDir?: string;
+
+    /**
      * Base directory for resolving relative paths.
      * Defaults to current working directory.
      */

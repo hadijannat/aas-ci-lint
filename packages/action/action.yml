@@ -30,6 +30,9 @@ inputs:
   template-version:
     description: 'IDTA template version to validate against'
     required: false
+  template-dir:
+    description: 'Directory containing IDTA template JSON files'
+    required: false
 
 outputs:
   sarif-file:

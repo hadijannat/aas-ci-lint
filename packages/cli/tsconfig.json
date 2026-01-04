@@ -15,6 +15,9 @@
             "path": "../engine-python"
         },
         {
+            "path": "../engine-template"
+        },
+        {
             "path": "../sarif"
         }
     ]

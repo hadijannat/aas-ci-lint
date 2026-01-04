@@ -6,12 +6,13 @@
     "main": "dist/index.js",
     "scripts": {
         "build": "tsc && node scripts/bundle.js",
-        "test": "node --test dist/**/*.test.js",
+        "test": "node --test dist",
         "clean": "rm -rf dist"
     },
     "dependencies": {
         "@aas-ci-lint/core": "workspace:*",
         "@aas-ci-lint/engine-python": "workspace:*",
+        "@aas-ci-lint/engine-template": "workspace:*",
         "@aas-ci-lint/sarif": "workspace:*",
         "@actions/core": "^1.10.0",
         "@actions/github": "^6.0.0"
