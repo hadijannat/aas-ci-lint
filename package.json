@@ -1,0 +1,20 @@
+{
+  "name": "aas-ci-lint",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AAS validation for CI with GitHub integration (SARIF + PR annotations)",
+  "packageManager": "pnpm@8.15.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.0"
+  }
+}

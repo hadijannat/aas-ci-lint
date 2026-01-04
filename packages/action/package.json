@@ -1,0 +1,24 @@
+{
+    "name": "@aas-ci-lint/action",
+    "version": "0.1.0",
+    "description": "GitHub Action for AAS CI Linter",
+    "type": "module",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc && node scripts/bundle.js",
+        "test": "node --test dist/**/*.test.js",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "@aas-ci-lint/core": "workspace:*",
+        "@aas-ci-lint/engine-python": "workspace:*",
+        "@aas-ci-lint/sarif": "workspace:*",
+        "@actions/core": "^1.10.0",
+        "@actions/github": "^6.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "esbuild": "^0.20.0",
+        "typescript": "^5.4.0"
+    }
+}

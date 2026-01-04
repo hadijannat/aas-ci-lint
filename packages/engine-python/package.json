@@ -1,0 +1,26 @@
+{
+    "name": "@aas-ci-lint/engine-python",
+    "version": "0.1.0",
+    "description": "AAS Test Engines wrapper for AAS CI Linter",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build": "tsc",
+        "test": "node --test dist/**/*.test.js",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "@aas-ci-lint/core": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.4.0"
+    }
+}

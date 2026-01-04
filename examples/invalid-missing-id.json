@@ -1,0 +1,14 @@
+{
+    "assetAdministrationShells": [
+        {
+            "idShort": "ExampleAAS",
+            "assetInformation": {
+                "assetKind": "Instance",
+                "globalAssetId": "urn:example:asset:1.0.0"
+            },
+            "modelType": "AssetAdministrationShell"
+        }
+    ],
+    "submodels": [],
+    "conceptDescriptions": []
+}

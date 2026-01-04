@@ -1,0 +1,46 @@
+name: 'AAS CI Lint'
+description: 'Validate AAS files (AASX/JSON/XML) with SARIF output and PR annotations'
+author: 'Hadi Jannat'
+branding:
+  icon: 'check-circle'
+  color: 'blue'
+
+inputs:
+  paths:
+    description: 'Glob patterns for files to validate (newline or comma-separated)'
+    required: false
+    default: |
+      **/*.aasx
+      **/*.json
+  exclude:
+    description: 'Glob patterns to exclude (newline or comma-separated)'
+    required: false
+  fail-on:
+    description: 'Severity levels that cause failure (comma-separated: error,warning,note)'
+    required: false
+    default: 'error'
+  sarif:
+    description: 'Path to write SARIF output'
+    required: false
+    default: 'aas-lint.sarif'
+  upload-sarif:
+    description: 'Whether to upload SARIF to GitHub Security tab'
+    required: false
+    default: 'true'
+  template-version:
+    description: 'IDTA template version to validate against'
+    required: false
+
+outputs:
+  sarif-file:
+    description: 'Path to the generated SARIF file'
+  findings-count:
+    description: 'Total number of findings'
+  errors-count:
+    description: 'Number of error-level findings'
+  warnings-count:
+    description: 'Number of warning-level findings'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
